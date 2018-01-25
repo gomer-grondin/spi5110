@@ -19,13 +19,20 @@ quick start:
 More details:
 root@bbb27:~/BBB/beaglebotA/spi5110# uname -a
 Linux bbb27 3.8.13-bone47 #1 SMP Fri Apr 11 01:36:09 UTC 2014 armv7l GNU/Linux
+
 root@bbb27:~/BBB/beaglebotA/spi5110# cat /etc/dogtag
 BeagleBoard.org BeagleBone Debian Image 2014-04-23
-root@bbb27:~/BBB/beaglebotA/spi5110# 
+
 
 you will also need a working environment for Perl
-problems with device tree overlays are beyond the scope of this project.  
+
+questions about device tree overlays are beyond the scope of this project.  
+
 you will need the PRUSS infrastructure for this release / kernel
+
+Makefile needs $SLOTS .. set to 
+root@bbb27:~/BBB/beaglebotA/spi5110# echo $SLOTS
+/sys/devices/bone_capemgr.9/slots
 
 
 -----------------

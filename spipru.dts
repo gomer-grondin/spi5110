@@ -1,0 +1,95 @@
+/dts-v1/;
+/plugin/;
+
+/ {
+  compatible = "ti,beaglebone", "ti,beaglebone-black";
+
+  /* identification */
+  part-number = "spipru";
+  version = "00A0";
+
+  exclusive-use =
+// gpio0
+    "P8.13", "GPIO23",
+    "P8.14", "GPIO26",
+    "P8.17", "GPIO27",
+    "P8.19", "GPIO22",
+// gpio1
+    "P8.11", "GPIO45",
+    "P8.12", "GPIO44",
+    "P8.15", "GPIO47",
+    "P8.16", "GPIO46",
+    "P8.26", "GPIO61",
+    "P9.12", "GPIO60",
+    "P9.14", "GPIO50",
+    "P9.15", "GPIO48",
+    "P9.16", "GPIO51",
+    "P9.23", "GPIO49",
+// gpio2
+    "P8.07", "GPIO66",
+    "P8.08", "GPIO67",
+    "P8.09", "GPIO69",
+    "P8.10", "GPIO68",
+    "P8.18", "GPIO65";
+
+  fragment@0 {
+    target = <&am33xx_pinmux>;
+    __overlay__ {
+    pinctrl_spipru: pinctrl_spipru_pins {
+        pinctrl-single,pins = <
+					/*
+						Table of mux options:
+						Bit 0 \
+						Bit 1 |- Mode
+						Bit 2 /
+						Bit 3: 1 - Pull disabled, 0 - Pull enabled
+						
+						Bit 4: 1 - Pull up, 0 - Pull down
+						Bit 5: 1 - Input, 0 – Output
+					*/
+					// gpio0
+                                        0x024 0x07 /* P8_13 gpio0[23] GPIO23 out pulldown Mode: 7 */
+                                        0x028 0x07 /* P8_14 gpio0[26] GPIO26 out pulldown Mode: 7 */
+                                        0x02c 0x07 /* P8_17 gpio0[27] GPIO27 out pulldown Mode: 7 */
+                                        0x020 0x07 /* P8_19 gpio0[22] GPIO22 out pulldown Mode: 7 */
+					// gpio1
+                                        0x034 0x27 /* P8_11 gpio1[13] GPIO45 in pulldown Mode: 7 */
+                                        0x030 0x07 /* P8_12 gpio1[12] GPIO44 out pulldown Mode: 7 */
+                                        0x03c 0x27 /* P8_15 gpio1[15] GPIO47 in pulldown Mode: 7 */
+                                        0x038 0x07 /* P8_16 gpio1[14] GPIO46 out pulldown Mode: 7 */
+                                        0x078 0x27 /* P9_12 gpio1[28] GPIO60 in pulldown Mode: 7 */
+                                        0x048 0x07 /* P9_14 gpio1[18] GPIO50 out pulldown Mode: 7 */
+                                        0x040 0x27 /* P9_15 gpio1[16] GPIO48 in pulldown Mode: 7 */
+                                        0x04c 0x07 /* P9_16 gpio1[19] GPIO51 out pulldown Mode: 7 */
+                                        0x07c 0x27 /* P8_26 gpio1[29] GPIO61 in pulldown Mode: 7 */
+                                        0x044 0x07 /* P9_23 gpio1[17] GPIO49 out pulldown Mode: 7 */
+					// gpio2
+                                        0x090 0x07 /* P8_07 gpio2[2] GPIO66 out pulldown Mode: 7 */
+                                        0x094 0x07 /* P8_08 gpio2[3] GPIO67 out pulldown Mode: 7 */
+                                        0x09c 0x07 /* P8_09 gpio2[5] GPIO69 out pulldown Mode: 7 */
+                                        0x098 0x07 /* P8_10 gpio2[4] GPIO68 out pulldown Mode: 7 */
+                                        0x08c 0x07 /* P8_18 gpio2[1] GPIO65 out pulldown Mode: 7 */
+          >;
+      };
+    };
+  };
+
+  fragment@1 {
+    target = <&ocp>;
+    __overlay__ {
+      test_helper: helper {
+        compatible = "bone-pinmux-helper";
+        pinctrl-names = "default";
+        pinctrl-0 = <&pinctrl_spipru>;
+        status = "okay";
+      };
+    };
+  };
+
+  fragment@2{
+  target = <&pruss>;
+    __overlay__ {
+      status = "okay";
+    };
+  };
+};

@@ -1,0 +1,31 @@
+// ipc.dat -- interprocess communications
+//          input to perl script (ipc.pl) that outputs ipc_p.h and ipc_c.h
+//		- ...
+//
+
+//
+enum ON				1
+enum OFF			0
+enum CALM			2
+enum DISTRAUGHT			1
+enum INPUT_READY               1
+enum NO_INPUT                  2
+enum INPUT_INIT                3
+
+word PANIC                        // set by c
+state CALM 
+state DISTRAUGHT
+word INPUT_READY_FLAG             // data poked in from c
+state INPUT_READY
+state NO_INPUT
+state INPUT_INIT
+
+word IPC_CLOCK_DELAY
+word IPC_MAXDATA
+word LCD5110_INIT0
+word LCD5110_INIT1
+word LCD5110_INIT2
+word LCD5110_INIT3
+word LCD5110_INIT4
+word LCD5110_INIT5
+word XMIT_BUFFER                  // data poked in from c

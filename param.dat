@@ -1,0 +1,41 @@
+# param.dat -- options for running LCD5110 
+#              uncomment desired lines and use this 
+#              file as input to ini.pl 
+#
+#
+# word IPC_CLOCK_DELAY
+# 2.5MM * 10ns ~ 25ms, 50ms peak to peak  -- slow enuf for oscope debug
+# 2MM  * 10ns ~ 20ms,  40ms peak to peak  -- slow enuf for oscope debug
+# 1MM  * 10ns ~ 10ms,  20ms peak to peak  -- slow enuf for oscope debug
+# 500K * 10ns ~ 5ms,   10ms peak to peak  -- slow enuf for oscope debug
+# 200K * 10ns ~ 2ms,    4ms peak to peak  -- slow enuf for oscope debug
+# 100K * 10ns ~ 1ms,    2ms peak to peak  -- slow enuf for oscope debug
+#  50K * 10ns ~ 500us,  1ms peak to peak  -- slow enuf for animations
+#  25K * 10ns ~ 250us, 500us peak to peak -- slow enuf for animations
+#  10K * 10ns ~ 100us, 200us peak to peak -- slow enuf for animations
+#   5K * 10ns ~ 50us, 100us peak to peak  -- quick animations
+#   1K * 10ns ~ 10us,  20us peak to peak  -- quicker animations
+#  100 * 10ns ~ 1us,    2us peak to peak  -- animation too fast
+#   50 * 10ns ~ 500ns,  1us peak to peak  -- animation too fast
+#   25 * 10ns ~ 250ns                     -- animation too fast
+#   10 * 10ns ~ 100ns                     -- animation too fast
+
+IPC_CLOCK_DELAY = 25000
+LCD5110_INIT0   = 33
+LCD5110_INIT1   = 192
+LCD5110_INIT2   = 4
+LCD5110_INIT3   = 19
+LCD5110_INIT4   = 32
+LCD5110_INIT5   = 12
+INPUT_READY_FLAG = INPUT_INIT
+
+#
+#
+# word IPC_MAXDATA
+# 	IPC_MAXDATA * 4 = max bytes used for transmit buffer
+#		since the transmit buffer is in the 12K shared space,
+#		don't overrun by putting large value here.
+#		LCD5110.c has limits of 1K to 6K
+
+IPC_MAXDATA = 512
+

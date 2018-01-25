@@ -98,7 +98,10 @@ Notes:
 	*) be aware, that the PRU continues to run until either halted,
 		or disabled.  This panic scheme disables the PRU
 
-
+*) one objective is to limit the resources used by the linux environment.  
+	This is why .c takes lots of 100ms breaks while .p works.
+	easily explained is that the faster the SPI clock is, the more
+	resources will be used by .c (linux).
 
 
 

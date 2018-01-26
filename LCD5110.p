@@ -53,12 +53,14 @@ CLOCK_DELAY_:
 	
 RESETINPUT:
 	ipcput NO_INPUT, INPUT_READY_FLAG
-	
-CHECK4INPUT:
         JAL r30.w0, SS_HI
         JAL r30.w0, MOSI_LOW
 	JAL r30.w0, SPI_CLOCK_LOW
 	JAL r30.w0, DC_COMMAND
+	
+CHECK4INPUT:
+	ipcfetch r0, PANIC
+	QBEQ FINIS, r0, DISTRAUGHT 
 	ipcfetch r0, INPUT_READY_FLAG
 	QBNE CHECK4INPUT, r0, INPUT_READY
 	MOV r6, XMIT_BUFFER
@@ -68,6 +70,8 @@ CHECK4INPUT:
 WRITE_BUFFER:
 	mypush r30, stackptr
 WRITE_BUFFER_:
+	ipcfetch r0, PANIC
+	QBEQ FINIS, r0, DISTRAUGHT 
 	ipcfetch r7, r6    // r7 has xmit word   (9 bit)
 	QBEQ WRITE_BUFFER_RET, r7, 0
         JAL r30.w0, XMIT_BYTE
@@ -76,6 +80,10 @@ WRITE_BUFFER_:
 WRITE_BUFFER_RET:
 	mypop r30, stackptr
 	RET
+
+FINIS:
+	ipcput HALTED, PANIC 
+	HALT
 
 XMIT_BYTE:
 	mypush r30, stackptr

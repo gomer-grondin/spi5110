@@ -8,6 +8,7 @@ enum ON				1
 enum OFF			0
 enum CALM			2
 enum DISTRAUGHT			1
+enum HALTED			3
 enum INPUT_READY               1
 enum NO_INPUT                  2
 enum INPUT_INIT                3
@@ -15,6 +16,7 @@ enum INPUT_INIT                3
 word PANIC                        // set by c
 state CALM 
 state DISTRAUGHT
+state HALTED
 word INPUT_READY_FLAG             // data poked in from c
 state INPUT_READY
 state NO_INPUT

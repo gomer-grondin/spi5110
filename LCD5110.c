@@ -147,6 +147,7 @@ int event_loop( unsigned int *pruSharedData, int delay ) {
 		fclose(file);
 		write_memory( PANIC / 4, &DISTRAUGHT );
 		notdone = 0;
+		slumber( 100000 ); // allow pru to halt
 		dump( pruSharedData );
 	} else {
 		slumber( delay ); 

@@ -77,30 +77,30 @@ int main(void) {
 
 	int notdone = 1;
 	int p = 0;
-	int rs = 0;
 	int datacount = 0;
 	int eofcount = 0;
 	int dc = maxdata( pruSharedData );
 	dc = dc > 6 * 256 ? 6 * 256 : dc;  // 6k max out of 12k shared
 	dc = dc < 1 * 256 ? 1 * 256 : dc;  // 1k min out of 12k shared
 	while( notdone ) {
-          while( ( rs = ready_status( pruSharedData ) ) == NO_INPUT ) {
+          while( ready_status( pruSharedData ) == NO_INPUT ) {
    	      fscanf( stdin, "%u", &data ); 
               datacount++;
               write_memory( XMIT_BUFFER / 4 + p++, &data );
               if( datacount > dc ) {
-                data = 0;
-                write_memory( XMIT_BUFFER / 4 + p++, &data );
+		data = 0;
+		write_memory( XMIT_BUFFER / 4 + p++, &data );
+		datacount = 0;
+		p = 0;
               }  
               if( data ) { eofcount = 0; } else {
                 write_memory( INPUT_READY_FLAG / 4, &INPUT_READY );
-                while( ( p = ready_status( pruSharedData ) ) == INPUT_READY ) {
-                  notdone = event_loop( pruSharedData, 100000 );
-                  if( notdone == 0 ) break;
+                while( ready_status( pruSharedData ) == INPUT_READY ) {
+                  if(( notdone = event_loop( pruSharedData, 100000 )) == 0 ) {
+                    break;
+		  }
                 }
 		if( eofcount++ > 5 ) { notdone = 0; break; }
-                datacount = 0;
-	        p = 0;
               } 
           }
 	}
@@ -143,14 +143,16 @@ void write_memory( int where, const unsigned int *what ) {
 int event_loop( unsigned int *pruSharedData, int delay ) {
 	int notdone = 1;
 	if( ( file = fopen( "panic", "r" ) ) ) {
-            printf( "PANIC\n" );
-            fclose(file);
-            write_memory( PANIC / 4, &DISTRAUGHT );
-            notdone = 0;
-	    dump( pruSharedData );
+		printf( "PANIC\n" );
+		fclose(file);
+		write_memory( PANIC / 4, &DISTRAUGHT );
+		notdone = 0;
+		dump( pruSharedData );
 	} else {
-	    slumber( delay ); 
+		slumber( delay ); 
 	}
-	if( delay > 0 ) { notdone = event_loop( pruSharedData, 0 ); }
+	if( notdone && delay > 0 ) {
+		notdone = event_loop( pruSharedData, 0 ); 
+	}
 	return notdone;
 } 

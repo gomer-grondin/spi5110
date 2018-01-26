@@ -29,10 +29,10 @@ bitmapdump.c : bitmap
 	perl -pnle ' BEGIN { print "#include <stdio.h>" } s/char .+_bits/char bitmap/; END { print "\nint main() {"; print "\tint i = 0;"; print "\tfor( ; i < sizeof( bitmap ) ; i++ ) {"; print "\t\tprintf( \"%u \", bitmap[i] );"; print "\t}"; print "\treturn 0;"; print "}"; } ' bitmap > bitmapdump.c
 
 ipc_c.h ipc_p.h : ./ipc.dat ./ipc.pl
-	./ipc.pl
+	perl ./ipc.pl
 
 LCD5110.ini : ini.pl ipc_c.h param.dat
-	./ini.pl
+	perl ./ini.pl
 
 clean :
 	rm -f ./bitmapdump.c ./bitmapdump.o ./bitmapdump 
@@ -43,6 +43,7 @@ clean :
 
 invoke : all 
 	rm -f panic
+	chmod 755 ./*.pl
 	./bitmapdump | ./bitmap2LCD5110.pl | ./LCD5110.pl | ./LCD5110
 
 device_tree : ./spipru-00A0.dtbo
